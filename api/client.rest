@@ -1,0 +1,33 @@
+# Find all persons
+
+GET http://localhost:8080/persons
+
+### Get person data
+
+GET http://localhost:8080/persons/64
+
+### Create a new person
+
+POST http://localhost:8080/persons
+Content-Type: application/json
+
+{
+    "name": "John Doe2",
+    "cpf": "00000000000",
+    "photo": "a"
+}
+
+### Update person data
+
+PUT http://localhost:8080/persons/60
+Content-Type: application/json
+
+{
+    "name": "Updated Name",
+    "cpf": "00000000000",
+    "photo": "a"
+}
+
+### Delete a person
+
+DELETE http://localhost:8080/persons/60

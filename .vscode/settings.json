@@ -15,5 +15,18 @@
     "editor.insertSpaces": true,
     "editor.detectIndentation": false,
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "facevault",
+            "group": "facevault",
+            "database": "facevault",
+            "username": "root",
+            "password": "my_password"
+        }
+    ]
 }

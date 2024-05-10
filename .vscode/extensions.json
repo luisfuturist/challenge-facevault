@@ -2,7 +2,10 @@
     "recommendations": [
         "VisualStudioExptTeam.vscodeintellicode",
         "redhat.java",
-        "Angular.ng-template"
+        "Angular.ng-template",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "humao.rest-client"
     ],
     "unwantedRecommendations": []
 }

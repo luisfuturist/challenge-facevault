@@ -2,12 +2,14 @@ version: '3.9'
 
 services:
   postgres:
-    image: postgres:latest
-    container_name: facevault-postgres
+    image: postgres:15.0
+    container_name: facevault-pg
     restart: always
     ports:
       - "5432:5432"
-    env_file:
-      - .env
+    environment:
+      POSTGRES_DB: facevault
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: my_password
     volumes:
       - ./pgdata:/var/lib/postgresql/data
