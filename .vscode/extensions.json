@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "VisualStudioExptTeam.vscodeintellicode",
+        "redhat.java",
+        "Angular.ng-template"
+    ],
+    "unwantedRecommendations": []
+}

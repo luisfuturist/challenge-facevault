@@ -1,0 +1,19 @@
+{
+    "files.exclude": {
+        "**/.gradle": true,
+        "**/gradle": true,
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        ".gitignore": ".git*",
+        ".env": ".env*",
+        "settings.gradle": "gradle.properties, gradlew, gradlew.bat",
+        "README.md": "*.md",
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "automatic"
+}
