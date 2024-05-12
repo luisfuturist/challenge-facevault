@@ -1,7 +1,4 @@
-import { Route, Routes } from '@angular/router';
-import { AddPersonComponent } from './pages/add-person/add-person.component';
-import { PersonListComponent } from './pages/person-list/person-list.component';
-import { PageNotFoundComponent } from './pages/not-found/not-found.component';
+import { Route } from '@angular/router';
 import { BreadcrumbItem } from './components/breadcrumb-items/breadcrumb-item';
 
 export const routes: CustomRoutes = [
@@ -17,7 +14,7 @@ export const routes: CustomRoutes = [
     },
     {
         path: 'persons',
-        component: PersonListComponent,
+        loadComponent: () => import('./pages/person-list/person-list.component').then(m => m.PersonListComponent),
         data: {
             breadcrumb: [
                 { icon: 'home', ariaLabel: 'Home', path: '/persons' },
@@ -27,7 +24,7 @@ export const routes: CustomRoutes = [
     },
     {
         path: 'add-person',
-        component: AddPersonComponent,
+        loadComponent: () => import('./pages/add-person/add-person.component').then(m => m.AddPersonComponent),
         data: {
             breadcrumb: [
                 { icon: 'home', ariaLabel: 'Home' },
@@ -38,7 +35,7 @@ export const routes: CustomRoutes = [
     },
     {
         path: '**',
-        component: PageNotFoundComponent,
+        loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.PageNotFoundComponent),
         data: {
             breadcrumb: [
                 { icon: 'home', ariaLabel: 'Home', path: '/persons' },
