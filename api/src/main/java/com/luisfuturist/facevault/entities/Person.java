@@ -2,6 +2,7 @@ package com.luisfuturist.facevault.entities;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class Person {
     private String name;
 
     @NotBlank(message = "Hashed CPF is mandatory")
+    @Column(unique = true)
     private String hashedCpf;
     @NotBlank(message = "Masked CPF is mandatory")
     private String maskedCpf;

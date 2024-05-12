@@ -1,21 +1,23 @@
 import { Component, OnInit, computed, effect, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { RouterLink } from '@angular/router';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { PersonService } from '../../beans/person/person.service';
+import { catchError, of } from 'rxjs';
 import { Person } from '../../beans/person/person';
+import { PersonService } from '../../beans/person/person.service';
 import { formatCpf, isCpf } from '../../utils/brazil.utils';
 import { debounced } from '../../utils/reactivity.utils';
-import { catchError, of, retry } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
     selector: 'app-person-list',
     standalone: true,
-    imports: [NzTableModule, NzDividerModule, NzInputModule, NzFormModule, NzIconModule, NzAvatarModule],
+    imports: [NzTableModule, NzInputModule, NzFormModule, NzIconModule, NzAvatarModule, NzButtonModule, NzFlexModule, RouterLink],
     templateUrl: './person-list.component.html',
     styleUrl: './person-list.component.css'
 })
@@ -35,7 +37,7 @@ export class PersonListComponent implements OnInit {
         }) || []
     })
 
-    constructor(private personService: PersonService) {
+    constructor(private personService: PersonService, private message: NzMessageService) {
         effect(() => {
             this.search(this.debouncedFilterValue())
         })
@@ -47,15 +49,15 @@ export class PersonListComponent implements OnInit {
         }
 
         if (isCpf(query)) {
-            const cpf = query;
+            const cpf = query.replaceAll(".", "").replace("-", "")
 
             this.personService.getPersonByCpf(cpf)
                 .pipe(
                     catchError((error) => {
                         if(error.status !== 404) {
-                            console.error('Error fetching profile:', error);
+                            this.message.error("Ocorreu algum erro ao filtrar as pessoas!")
                         }
-                        
+
                         return of(null);
                     })
                 )
@@ -68,9 +70,15 @@ export class PersonListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.personService.getPersons().subscribe((o) => {
-            this.persons.set(o || [])
-        })
+        this.personService.getPersons()
+            .pipe(catchError(() => {
+                this.message.error("Ocorreu algum erro buscar os cadastros!")
+
+                return of(null);
+            }))
+            .subscribe((o) => {
+                this.persons.set(o || [])
+            })
     }
 
     applyFilter(event: Event) {

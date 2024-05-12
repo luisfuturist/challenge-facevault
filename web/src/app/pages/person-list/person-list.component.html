@@ -1,21 +1,27 @@
-<div nz-form nzLayout="vertical">
-    <nz-form-item>
-        <nz-form-label [nzSpan]="null">Filtro</nz-form-label>
+<h2 nz-typography>Pessoas</h2>
 
-        <nz-form-control [nzSpan]="null">
-            <nz-input-group [nzSuffix]="suffixIconFilter">
-                <input nz-input type="text" ngControl formControlName="nameFilter" placeholder="Nome"
-                    (keyup)="applyFilter($event)" name="nameFilter" />
-            </nz-input-group>
-        </nz-form-control>
-
-        <ng-template #suffixIconFilter>
-            <span nz-icon nzType="filter" nzTheme="fill"></span>
-        </ng-template>
-    </nz-form-item>
+<div nz-flex nzJustify="space-between">
+    <a nz-button nzType="primary" routerLink="/add-person">
+        <span nz-icon nzType="plus"></span>
+        Adicionar pessoa
+    </a>
+    <div nz-form nzLayout="horizontal" style="max-width: 24rem;">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="null" hidden>Filtro</nz-form-label>
+    
+            <nz-form-control [nzSpan]="null">
+                <nz-input-group [nzSuffix]="suffixIconFilter">
+                    <input nz-input type="text" ngControl formControlName="nameFilter" placeholder="Nome"
+                        (keyup)="applyFilter($event)" name="nameFilter" />
+                </nz-input-group>
+            </nz-form-control>
+    
+            <ng-template #suffixIconFilter>
+                <span nz-icon nzType="filter" nzTheme="fill"></span>
+            </ng-template>
+        </nz-form-item>
+    </div>
 </div>
-
-<nz-divider />
 
 <nz-table #basicTable [nzData]="dataSet()">
     <thead>

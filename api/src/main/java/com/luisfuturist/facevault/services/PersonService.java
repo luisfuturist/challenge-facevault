@@ -62,4 +62,11 @@ public class PersonService {
     public void deletePerson(Long id) {
         personRepo.deleteById(id);
     }
+
+    public boolean existsByCpf(String cpf) throws NoSuchAlgorithmException {
+        var hashedCpf = CryptoUtils.hashCpf(cpf);
+        var person = personRepo.findByHashedCpf(hashedCpf).orElse(null);
+        
+        return person != null;
+    }
 }

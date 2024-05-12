@@ -4,3 +4,9 @@ export interface Person {
     maskedCpf: string;
     photoUrl: string;
 }
+
+export interface PersonCreate {
+    name: string;
+    cpf: string;
+    photoUrl: string;
+}

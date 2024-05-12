@@ -36,3 +36,7 @@ DELETE http://localhost:8080/persons/60
 ### Find person by CPF
 
 GET http://localhost:8080/persons/search/00000000000
+
+### Check unique CPF
+
+GET http://localhost:8080/persons/check-unique-cpf/00000000000

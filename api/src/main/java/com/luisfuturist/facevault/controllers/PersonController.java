@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,7 @@ public class PersonController {
     @ResponseBody
     public List<PersonResDto> getPersons() {
         var persons = personService.getAllPersons();
+
         return persons.stream()
                 .map(this::convertToPersonResDto).collect(Collectors.toList());
     }
@@ -76,7 +78,12 @@ public class PersonController {
     @ResponseBody
     public ResponseEntity<PersonResDto> createPerson(@Valid @RequestBody PersonDto personDto)
             throws NoSuchAlgorithmException {
+        if (personService.existsByCpf(personDto.getCpf())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF already used");
+        }
+
         var person = convertToEntity(personDto);
+
         var createdPerson = personService.savePerson(person);
 
         return ResponseEntity.ok(convertToPersonResDto(createdPerson));
@@ -91,6 +98,13 @@ public class PersonController {
         }
 
         var person = convertToEntity(personDto);
+
+        var hashedCpf = CryptoUtils.hashCpf(personDto.getCpf());
+
+        if (!person.getHashedCpf().equals(hashedCpf)) {
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
+        }
+
         var updatedPerson = personService.updatePerson(id, person);
 
         if (updatedPerson == null) {
@@ -132,5 +146,11 @@ public class PersonController {
         updatedPersonDto.setPhotoUrl(person.getPhotoUrl());
 
         return updatedPersonDto;
+    }
+
+    @GetMapping("/exists-by-cpf")
+    @ResponseBody
+    public boolean existsByCpf(@RequestParam String cpf) throws NoSuchAlgorithmException {
+        return personService.existsByCpf(cpf);
     }
 }

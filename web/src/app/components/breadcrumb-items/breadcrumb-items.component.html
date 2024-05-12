@@ -1,0 +1,20 @@
+@for (item of data(); track $index) {
+<nz-breadcrumb-item>
+    @if ($index === data().length - 1) {
+    @if (item.icon) {
+    <span nz-icon [nzType]="item.icon" [nzTheme]="item.iconTheme || 'outline'"
+        [attr.aria-label]="item.ariaLabel"></span>
+    }
+    {{item.label}}
+    } @else {
+    <a [routerLink]="item.path" [attr.disabled]="item.path || $index === data().length - 1 ? null : true"
+        [attr.style]="$index === data().length - 1 ? 'cursor: initial !important;' : ''">
+        @if (item.icon) {
+        <span nz-icon [nzType]="item.icon" [nzTheme]="item.iconTheme || 'outline'"
+            [attr.aria-label]="item.ariaLabel"></span>
+        }
+        {{item.label}}
+    </a>
+    }
+</nz-breadcrumb-item>
+}
