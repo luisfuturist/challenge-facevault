@@ -10,7 +10,11 @@ export class PersonService {
 
   constructor(private http: HttpClient) { }
 
-  getPersons(): Observable<Person[]> {
+  getPersons() {
     return this.http.get<Person[]>("http://localhost:8080/persons");
+  }
+
+  getPersonByCpf(cpf: string) {
+    return this.http.get<Person>(`http://localhost:8080/persons/search/${cpf}`);
   }
 }

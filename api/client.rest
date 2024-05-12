@@ -12,8 +12,8 @@ POST http://localhost:8080/persons
 Content-Type: application/json
 
 {
-    "name": "Batou",
-    "cpf": "00000000000",
+    "name": "Motoko",
+    "cpf": "10000000010",
     "photoUrl": "https://avatars.githubusercontent.com/u/101954293?s=48&v=4"
 }
 
@@ -32,3 +32,7 @@ Content-Type: application/json
 ### Delete a person
 
 DELETE http://localhost:8080/persons/60
+
+### Find person by CPF
+
+GET http://localhost:8080/persons/search/00000000000

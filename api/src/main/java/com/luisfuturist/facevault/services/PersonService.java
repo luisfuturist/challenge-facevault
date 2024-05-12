@@ -3,11 +3,13 @@ package com.luisfuturist.facevault.services;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.luisfuturist.facevault.entities.Person;
 import com.luisfuturist.facevault.repositories.PersonRepository;
+import com.luisfuturist.facevault.utils.CryptoUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +25,12 @@ public class PersonService {
     public Person getPersonById(Long id) {
         var optionalPerson = personRepo.findById(id);
         return optionalPerson.orElse(null);
+    }
+
+    public Person getPersonByCpf(String cpf) throws NoSuchAlgorithmException {
+        var hashedCpf = CryptoUtils.hashCpf(cpf);
+
+        return personRepo.findByHashedCpf(hashedCpf).orElse(null);
     }
 
     public Person savePerson(Person person) {
