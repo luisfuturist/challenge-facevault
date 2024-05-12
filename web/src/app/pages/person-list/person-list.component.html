@@ -1,0 +1,45 @@
+<div nz-form nzLayout="vertical">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="null">Filtro</nz-form-label>
+
+        <nz-form-control [nzSpan]="null">
+            <nz-input-group [nzSuffix]="suffixIconFilter">
+                <input nz-input type="text" ngControl formControlName="nameFilter" placeholder="Nome"
+                    (keyup)="applyFilter($event)" name="nameFilter" />
+            </nz-input-group>
+        </nz-form-control>
+
+        <ng-template #suffixIconFilter>
+            <span nz-icon nzType="filter" nzTheme="fill"></span>
+        </ng-template>
+    </nz-form-item>
+</div>
+
+<nz-divider />
+
+<nz-table #basicTable [nzData]="dataSet()">
+    <thead>
+        <tr>
+            <th>Foto | Nome</th>
+            <th>CPF</th>
+            <!-- <th>Ações</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        @for (data of basicTable.data; track $index) {
+        <tr>
+            <td style="display: flex; gap: 0.25rem; align-items: center;">
+                <nz-avatar nzSize="small" nzIcon="user" [nzSrc]="data.photoUrl"></nz-avatar>
+                {{data.name}}
+            </td>
+            <td>{{formatCpf(data.maskedCpf)}}</td>
+
+            <!-- <td>
+                <a>Action 一 {{data.name}}</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a>Delete</a>
+            </td> -->
+        </tr>
+        }
+    </tbody>
+</nz-table>

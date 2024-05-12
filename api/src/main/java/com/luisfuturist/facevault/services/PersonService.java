@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.luisfuturist.facevault.entities.Person;
 import com.luisfuturist.facevault.repositories.PersonRepository;
-import com.luisfuturist.facevault.utils.CryptoUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,37 +20,35 @@ public class PersonService {
         return personRepo.findAll();
     }
 
-    public Person savePerson(Person person) throws NoSuchAlgorithmException {
-        var hashedCPF = CryptoUtils.hashCPF(person.getCpf());
-        person.setCpf(hashedCPF);
-
-        person.setCreatedAt(LocalDateTime.now());
-        person.setUpdatedAt(LocalDateTime.now());
-        return personRepo.save(person);
-    }
-
     public Person getPersonById(Long id) {
         var optionalPerson = personRepo.findById(id);
         return optionalPerson.orElse(null);
     }
 
-    public Person updatePerson(Long id, Person updatedPerson) throws NoSuchAlgorithmException {
+    public Person savePerson(Person person) {
+        return personRepo.save(person);
+    }
+
+    public Person updatePerson(Long id, Person person) throws NoSuchAlgorithmException {
         var existingPerson = personRepo.findById(id).orElse(null);
 
-        if (existingPerson != null) {
-            existingPerson.setCreatedAt(existingPerson.getCreatedAt());
-            existingPerson.setUpdatedAt(LocalDateTime.now());
-
-            existingPerson.setName(updatedPerson.getName());
-            
-            var hashedCPF = CryptoUtils.hashCPF(updatedPerson.getCpf());
-            existingPerson.setCpf(hashedCPF);
-            existingPerson.setPhoto(updatedPerson.getPhoto());
-            
-            return personRepo.save(existingPerson);
+        if (existingPerson == null) {
+            return null;
         }
 
-        return null;
+        existingPerson.setName(person.getName());
+
+        existingPerson.setHashedCpf(person.getHashedCpf());
+        existingPerson.setMaskedCpf(person.getMaskedCpf());
+
+        existingPerson.setPhotoUrl(person.getPhotoUrl());
+
+        existingPerson.setCreatedAt(existingPerson.getCreatedAt());
+        existingPerson.setUpdatedAt(LocalDateTime.now());
+
+        var updatedPerson = personRepo.save(existingPerson);
+
+        return updatedPerson;
     }
 
     public void deletePerson(Long id) {

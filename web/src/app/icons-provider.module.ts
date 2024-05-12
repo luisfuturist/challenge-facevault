@@ -1,12 +1,12 @@
 import {
-    DashboardOutline,
+    FilterFill,
     IdcardFill
 } from '@ant-design/icons-angular/icons';
 
 import { NgModule } from '@angular/core';
 import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
 
-const icons = [DashboardOutline, IdcardFill];
+const icons = [IdcardFill, FilterFill];
 
 @NgModule({
   imports: [NzIconModule],

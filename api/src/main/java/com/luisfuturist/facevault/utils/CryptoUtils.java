@@ -8,7 +8,7 @@ public class CryptoUtils {
     private static final String HASH_ALGORITHM = "SHA-256";
     private static final int SALT_LENGTH = 16;
 
-    public static String hashCPF(String cpf) throws NoSuchAlgorithmException {
+    public static String hashCpf(String cpf) throws NoSuchAlgorithmException {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[SALT_LENGTH];
         random.nextBytes(salt);
@@ -38,5 +38,9 @@ public class CryptoUtils {
             hexString.append(hex);
         }
         return hexString.toString();
+    }
+
+    public static String maskCpf(String cpf) {
+        return "*********" + cpf.charAt(9) + cpf.charAt(10);
     }
 }

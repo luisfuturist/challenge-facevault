@@ -1,9 +1,13 @@
 package com.luisfuturist.facevault.controllers;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,58 +18,107 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.luisfuturist.facevault.dtos.PersonDto;
+import com.luisfuturist.facevault.dtos.PersonResDto;
 import com.luisfuturist.facevault.entities.Person;
 import com.luisfuturist.facevault.services.PersonService;
+import com.luisfuturist.facevault.utils.CryptoUtils;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/persons")
 @Validated
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 public class PersonController {
     @Autowired
     private PersonService personService;
 
     @GetMapping
-    public ResponseEntity<List<Person>> getPersons() {
+    @ResponseBody
+    public List<PersonResDto> getPersons() {
         var persons = personService.getAllPersons();
-        return ResponseEntity.ok(persons);
+        return persons.stream()
+                .map(this::convertToPersonResDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Person> getPersonById(@PathVariable Long id) {
+    @ResponseBody
+    public PersonResDto getPersonById(@PathVariable Long id) {
         var person = personService.getPersonById(id);
-        
+
         if (person == null) {
-            return ResponseEntity.notFound().build();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        return ResponseEntity.ok(person);
+        return convertToPersonResDto(person);
     }
 
     @PostMapping
-    public ResponseEntity<Person> createPerson(@Valid @RequestBody Person person) throws NoSuchAlgorithmException {
-        var savedPerson = personService.savePerson(person);
-        return ResponseEntity.ok(savedPerson);
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseEntity<PersonResDto> createPerson(@Valid @RequestBody PersonDto personDto)
+            throws NoSuchAlgorithmException {
+        var person = convertToEntity(personDto);
+        var createdPerson = personService.savePerson(person);
+
+        return ResponseEntity.ok(convertToPersonResDto(createdPerson));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Person> updatePerson(@PathVariable Long id, @Valid @RequestBody Person person) throws NoSuchAlgorithmException {
+    @ResponseStatus(HttpStatus.OK)
+    public PersonResDto updatePerson(@PathVariable Long id, @Valid @RequestBody PersonDto personDto)
+            throws NoSuchAlgorithmException {
+        if (!Objects.equals(id, personDto.getId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "IDs don't match");
+        }
+
+        var person = convertToEntity(personDto);
         var updatedPerson = personService.updatePerson(id, person);
 
         if (updatedPerson == null) {
-            return ResponseEntity.notFound().build();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        
-        return ResponseEntity.ok(updatedPerson);
+
+        return convertToPersonResDto(updatedPerson);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
+    @ResponseBody
+    public void deletePerson(@PathVariable Long id) {
         personService.deletePerson(id);
-        return ResponseEntity.ok().build();
+    }
+
+    private Person convertToEntity(PersonDto personDto) throws NoSuchAlgorithmException {
+        var person = new Person();
+        person.setId(personDto.getId());
+        person.setName(personDto.getName());
+
+        var hashedCpf = CryptoUtils.hashCpf(personDto.getCpf());
+        person.setHashedCpf(hashedCpf);
+        var maskedCpf = CryptoUtils.maskCpf(personDto.getCpf());
+        person.setMaskedCpf(maskedCpf);
+
+        person.setPhotoUrl(personDto.getPhotoUrl());
+
+        person.setCreatedAt(LocalDateTime.now());
+        person.setUpdatedAt(null);
+
+        return person;
+    }
+
+    private PersonResDto convertToPersonResDto(Person person) {
+        var updatedPersonDto = new PersonResDto();
+        updatedPersonDto.setId(person.getId());
+        updatedPersonDto.setName(person.getName());
+        updatedPersonDto.setMaskedCpf(person.getMaskedCpf());
+        updatedPersonDto.setPhotoUrl(person.getPhotoUrl());
+
+        return updatedPersonDto;
     }
 }

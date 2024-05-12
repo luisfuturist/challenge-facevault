@@ -12,9 +12,9 @@ POST http://localhost:8080/persons
 Content-Type: application/json
 
 {
-    "name": "John Doe2",
+    "name": "Batou",
     "cpf": "00000000000",
-    "photo": "a"
+    "photoUrl": "https://avatars.githubusercontent.com/u/101954293?s=48&v=4"
 }
 
 ### Update person data
@@ -23,9 +23,10 @@ PUT http://localhost:8080/persons/60
 Content-Type: application/json
 
 {
+    "id": 60,
     "name": "Updated Name",
     "cpf": "00000000000",
-    "photo": "a"
+    "photoUrl": "https://avatars.githubusercontent.com/u/101954293?s=48&v=4"
 }
 
 ### Delete a person

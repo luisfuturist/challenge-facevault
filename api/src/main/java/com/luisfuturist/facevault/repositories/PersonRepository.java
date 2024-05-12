@@ -7,5 +7,5 @@ import com.luisfuturist.facevault.entities.Person;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
-    
+
 }
