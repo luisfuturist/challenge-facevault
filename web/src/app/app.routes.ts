@@ -1,9 +1,10 @@
-import { Routes } from '@angular/router';
+import { Route, Routes } from '@angular/router';
 import { AddPersonComponent } from './pages/add-person/add-person.component';
 import { PersonListComponent } from './pages/person-list/person-list.component';
-import { ThemeType } from '@ant-design/icons-angular';
+import { PageNotFoundComponent } from './pages/not-found/not-found.component';
+import { BreadcrumbItem } from './components/breadcrumb-items/breadcrumb-item';
 
-export const routes: Routes = [
+export const routes: CustomRoutes = [
     {
         path: '',
         pathMatch: 'full',
@@ -35,12 +36,22 @@ export const routes: Routes = [
             ]
         }
     },
+    {
+        path: '**',
+        component: PageNotFoundComponent,
+        data: {
+            breadcrumb: [
+                { icon: 'home', ariaLabel: 'Home', path: '/persons' },
+                { icon: 'question', label: 'Página não encontrada', ariaLabel: 'Página não encontrada' },
+            ]
+        }
+    }
 ];
 
-export interface BreadcrumbItem {
-    label?: string;
-    ariaLabel: string;
-    icon?: string;
-    iconTheme?: ThemeType;
-    path?: string;
+interface CustomRoute extends Route {
+    data?: {
+        breadcrumb: BreadcrumbItem[]
+    };
 }
+
+type CustomRoutes = CustomRoute[]

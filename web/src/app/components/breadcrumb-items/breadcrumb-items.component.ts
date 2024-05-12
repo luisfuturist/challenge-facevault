@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ActivationStart, Router, RouterLink } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { BreadcrumbItem } from '../../app.routes';
+import { BreadcrumbItem } from './breadcrumb-item';
 
 @Component({
   selector: 'app-breadcrumb-items',
