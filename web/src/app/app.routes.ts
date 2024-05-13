@@ -34,6 +34,17 @@ export const routes: CustomRoutes = [
         }
     },
     {
+        path: 'person/:id',
+        loadComponent: () => import('./pages/person-details/person-details.component').then(m => m.PersonDetailsComponent),
+        data: {
+            breadcrumb: [
+                { icon: 'home', ariaLabel: 'Home' },
+                { icon: 'user', label: 'Pessoas', ariaLabel: 'Pessoas', path: '/persons' },
+                { icon: 'user', label: 'Pessoa', ariaLabel: 'Pessoa' },
+            ]
+        }
+    },
+    {
         path: '**',
         loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.PageNotFoundComponent),
         data: {

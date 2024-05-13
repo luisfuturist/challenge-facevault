@@ -1,0 +1,73 @@
+<h2 nz-typography>Detalhes</h2>
+
+<div nz-flex nzJustify="end">
+    <nz-space>
+        <!-- <button nz-button *nzSpaceItem nzType="text">
+            <span nz-icon nzType="edit"></span>
+            Editar
+        </button> -->
+
+        <button *nzSpaceItem (click)="$event.stopPropagation()" nzType="text" nz-button nzDanger nz-popconfirm
+            nzPopconfirmPlacement="left" [nzPopconfirmTrigger]="loading() || error() ? null : 'hover'" nzOkText="Apagar"
+            nzPopconfirmTitle="Você tem certeza?" (nzOnConfirm)="deletePerson()" [disabled]="loading() || error()">
+            <span nz-icon nzType="delete"></span>
+            Apagar
+        </button>
+    </nz-space>
+</div>
+
+@if (loading()) {
+<div class="card">
+    <header>
+        <nz-skeleton-element class="avatar" nzType="avatar"></nz-skeleton-element>
+    </header>
+
+    <main>
+        <h3 style="margin-top: 0.5rem;">
+            <nz-skeleton-element nzType="input" nzSize="large" style="width:200px"></nz-skeleton-element>
+        </h3>
+
+        <p>
+            <nz-skeleton-element nzType="input" nzSize="default"
+                style="width:200px; display: flex; justify-content: center;"></nz-skeleton-element>
+        </p>
+    </main>
+</div>
+} @else if(error()) {
+<div class="card">
+    <header>
+        <nz-skeleton-element class="avatar" nzType="avatar"></nz-skeleton-element>
+    </header>
+
+    <main>
+        <h3 style="margin-top: 0.5rem;">
+            Erro
+        </h3>
+
+        <p nz-typography nzType="danger">
+            Ops, ocorreu algum problema ao buscar os dados!
+        </p>
+    </main>
+</div>
+} @else {
+<div class="card">
+    <header>
+        <nz-avatar class="avatar" [nzSrc]="data()!.photoUrl" nzAlt="Face photo"></nz-avatar>
+    </header>
+
+    <main>
+        <h3>
+            {{data()!.name}}
+        </h3>
+
+        <p>
+            {{formatCpf(data()!.maskedCpf)}}
+        </p>
+    </main>
+</div>
+}
+
+<a nz-button nzType="link" routerLink="/" style="margin: 0px; padding: 0px;">
+    <span nz-icon nzType="arrow-left"></span>
+    Voltar
+</a>

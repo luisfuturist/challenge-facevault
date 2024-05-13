@@ -14,6 +14,10 @@ export class PersonService {
         return this.http.get<Person[]>("http://localhost:8080/persons");
     }
 
+    getPersonById(id: number) {
+        return this.http.get<Person>(`http://localhost:8080/persons/${id}`);
+    }
+
     searchPersonByCpf(cpf: string) {
         return this.http.get<Person>(`http://localhost:8080/persons/search-by-cpf/${cpf}`)
     }

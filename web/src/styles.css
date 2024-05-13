@@ -14,3 +14,12 @@ body {
 .ant-popover-message {
     gap: 0.25rem;
 }
+
+nz-avatar {
+    border: 1px rgb(229 231 235) solid;
+}
+
+nz-skeleton-element .ant-skeleton-avatar {
+    width: 100% !important;
+    height: 100% !important;
+}

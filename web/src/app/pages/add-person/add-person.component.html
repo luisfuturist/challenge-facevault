@@ -4,7 +4,8 @@
     <nz-form-item>
         <nz-form-label>Nome</nz-form-label>
 
-        <nz-form-control [nzErrorTip]="formValidation.name.errorTip()" [nzValidateStatus]="formValidation.name.validateStatus()">
+        <nz-form-control [nzErrorTip]="formValidation.name.errorTip()"
+            [nzValidateStatus]="formValidation.name.validateStatus()">
             <input ngModel [formField]='formModel.controls.name' id='name' nz-input type="text" placeholder="Nome"
                 name="name" />
         </nz-form-control>
@@ -13,24 +14,29 @@
     <nz-form-item>
         <nz-form-label>CPF</nz-form-label>
 
-        <nz-form-control [nzErrorTip]="formValidation.cpf.errorTip()" [nzValidateStatus]="formValidation.cpf.validateStatus()">
-            <input ngModel [formField]='formModel.controls.cpf' id='cpf' nz-input type="text" placeholder="000.000.000-00"
-                name="cpf" />
+        <nz-form-control [nzErrorTip]="formValidation.cpf.errorTip()"
+            [nzValidateStatus]="formValidation.cpf.validateStatus()">
+            <input ngModel [formField]='formModel.controls.cpf' id='cpf' nz-input type="text"
+                placeholder="000.000.000-00" name="cpf" />
         </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
         <nz-form-label>URL da Foto</nz-form-label>
 
-        <nz-form-control [nzErrorTip]="formValidation.photoUrl.errorTip()" [nzValidateStatus]="formValidation.photoUrl.validateStatus()">
+        <nz-form-control [nzErrorTip]="formValidation.photoUrl.errorTip()"
+            [nzValidateStatus]="formValidation.photoUrl.validateStatus()">
             <input ngModel [formField]='formModel.controls.photoUrl' id='photoUrl' nz-input type="url" placeholder="URL"
                 name="photoUrl" />
         </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-control>
-            <button nz-button nzType="primary">Enviar</button>
+        <nz-form-control nzFlex>
+            <nz-space>
+                <button *nzSpaceItem nz-button nzType="primary">Enviar</button>
+                <button *nzSpaceItem nz-button (click)="cancel($event)" type="button">Cancelar</button>
+            </nz-space>
         </nz-form-control>
     </nz-form-item>
 </form>

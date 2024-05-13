@@ -36,28 +36,30 @@
     </thead>
     <tbody>
         @for (data of basicTable.data; track $index) {
-        <tr>
-            <td style="display: flex; gap: 0.25rem; align-items: center;">
-                <nz-avatar nzSize="small" nzIcon="user" [nzSrc]="data.photoUrl"></nz-avatar>
-                {{data.name}}
+        <tr (click)="goToDetails(data.id)" style="cursor: pointer;">
+            <td>
+                <div style="display: flex; gap: 0.25rem; align-items: center;">
+                    <nz-avatar nzSize="small" nzIcon="user" [nzSrc]="data.photoUrl"></nz-avatar>
+                    {{data.name}}
+                </div>
             </td>
 
             <td>{{formatCpf(data.maskedCpf)}}</td>
 
             <td>
-                <!-- <button (click)="deletePerson(data.id)">
-                    <span nz-icon nzType="delete"></span>
-                    Apagar
-                </button> -->
-
-                <button nzType="text" nz-button nzDanger nz-popconfirm nzPopconfirmTrigger="hover" nzOkText="Apagar" nzPopconfirmTitle="Você tem certeza?"
-                    (nzOnConfirm)="deletePerson(data.id)">
+                <button (click)="$event.stopPropagation()" nzType="text" nz-button nzDanger nz-popconfirm nzPopconfirmTrigger="hover" nzOkText="Apagar"
+                    nzPopconfirmTitle="Você tem certeza?" (nzOnConfirm)="deletePerson(data.id)">
                     <span nz-icon nzType="delete"></span>
                     Apagar
                 </button>
                 <ng-template #iconTpl>
                     <span nz-icon nzType="question-circle-o" style="color: red;"></span>
                 </ng-template>
+
+                <a nz-button nzType="text" (click)="$event.stopPropagation()" [routerLink]="['/person', data.id]">
+                    <span nz-icon nzType="info-circle"></span>
+                    Detalhes
+                </a>
             </td>
         </tr>
         }

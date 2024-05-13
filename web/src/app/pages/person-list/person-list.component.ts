@@ -1,5 +1,5 @@
 import { Component, effect, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
@@ -30,7 +30,7 @@ export class PersonListComponent {
     filterValue = signal("")
     debouncedFilterValue = debounced(this.filterValue, 500)
 
-    constructor(private personService: PersonService, private message: NzMessageService) {
+    constructor(private personService: PersonService, private message: NzMessageService, private router: Router) {
         effect(() => {
             this.search(this.debouncedFilterValue())
         })
@@ -118,6 +118,10 @@ export class PersonListComponent {
 
                 this.message.success("Pessoa apagada com sucesso!")
             })
+    }
+
+    goToDetails(id: number) {
+        this.router.navigate(["/person", id])
     }
 
     applyFilter(event: Event) {

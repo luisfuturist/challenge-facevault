@@ -12,8 +12,10 @@ import { PersonService } from '../../beans/person/person.service';
 import { CPF_PATTERN } from '../../utils/brazil.utils';
 import { convertToDto, createFormValidation } from '../../utils/form.utils';
 import { URL_PATTERN } from '../../utils/web.utils';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
     selector: 'app-add-person',
@@ -27,6 +29,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         NzButtonModule,
         NzMessageModule,
         RouterLink,
+        NzFlexModule,
+        NzSpaceModule,
         NzIconModule
     ],
     templateUrl: './add-person.component.html',
@@ -70,7 +74,7 @@ export class AddPersonComponent {
 
     formValidation = createFormValidation(this.formModel)
 
-    constructor(private personService: PersonService, private message: NzMessageService) { }
+    constructor(private personService: PersonService, private message: NzMessageService, private router: Router) { }
 
     submitForm() {
         this.formModel.markAllAsTouched();
@@ -80,6 +84,11 @@ export class AddPersonComponent {
         }
 
         this.savePerson()
+    }
+
+    cancel(e: Event) {
+        e.preventDefault()
+        this.router.navigate(["/"])
     }
 
     private savePerson() {

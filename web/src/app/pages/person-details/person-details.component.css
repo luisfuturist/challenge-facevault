@@ -1,0 +1,30 @@
+.card {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.card header {
+    display: flex;
+    justify-content: center;
+}
+
+.card main h3 {
+    display: flex;
+    justify-content: center;
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+.card main p {
+    display: flex;
+    justify-content: center;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+.avatar {
+    width: 128px;
+    height: 128px;
+}
