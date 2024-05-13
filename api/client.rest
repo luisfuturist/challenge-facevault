@@ -2,9 +2,17 @@
 
 GET http://localhost:8080/persons
 
-### Get person data
+### Get person data by id
 
-GET http://localhost:8080/persons/64
+GET http://localhost:8080/persons/1
+
+### Find person by CPF
+
+GET http://localhost:8080/persons/search-by-cpf/00000000000
+
+### Find person by name
+
+GET http://localhost:8080/persons/search-by-name/Motoko
 
 ### Create a new person
 
@@ -13,30 +21,21 @@ Content-Type: application/json
 
 {
     "name": "Motoko",
-    "cpf": "10000000010",
+    "cpf": "00000000000",
     "photoUrl": "https://avatars.githubusercontent.com/u/101954293?s=48&v=4"
 }
 
 ### Update person data
 
-PUT http://localhost:8080/persons/60
+PUT http://localhost:8080/persons/1
 Content-Type: application/json
 
 {
-    "id": 60,
-    "name": "Updated Name",
-    "cpf": "00000000000",
+    "id": 1,
+    "name": "Motoko Kusanagi",
     "photoUrl": "https://avatars.githubusercontent.com/u/101954293?s=48&v=4"
 }
 
 ### Delete a person
 
-DELETE http://localhost:8080/persons/60
-
-### Find person by CPF
-
-GET http://localhost:8080/persons/search/00000000000
-
-### Check unique CPF
-
-GET http://localhost:8080/persons/check-unique-cpf/00000000000
+DELETE http://localhost:8080/persons/

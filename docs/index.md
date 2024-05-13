@@ -9,7 +9,7 @@ To set up the development environment, ensure you have the following tools insta
 - [Git](https://git-scm.com/downloads)
 - [OpenJDK](https://openjdk.org/install/)
 - [Node.js v21.7.2](https://nodejs.org/en)
-- [Gradle](https://gradle.org/install/) (optional)
+- [Gradle](https://gradle.org/install/)
 - [Vscode](https://code.visualstudio.com/download) (optional)
 
 For Visual Studio Code, consider installing the following extensions:
@@ -58,14 +58,19 @@ To stop the PostgreSQL database container, run:
 docker compose down
 ```
 
+## Testing API
+
+For testing the API, I utilized the [Vscode REST Client extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client). You can find all the API requests in the [client.rest](../api/client.rest) file.
+
+Additionally, for your convenience, I've created a public Postman workspace where you can test the API if you prefer using Postman. You can access the Postman workspace [here](https://www.postman.com/luisfuturist/workspace/facevault/overview).
+
 ## Reference
 
-For reference, please consider the following sections:
+For further reference, please consider the following sections:
 
 ### Backend
 
 * [Official Gradle documentation](https://docs.gradle.org)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.2.5/gradle-plugin/reference/html/#build-image)
 
 #### Additional Links
 
