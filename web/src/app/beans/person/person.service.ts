@@ -26,6 +26,10 @@ export class PersonService {
         return this.http.post<Person>("http://localhost:8080/persons", personDto);
     }
 
+    deletePerson(personId: number) {
+        return this.http.delete<Person>(`http://localhost:8080/persons/${personId}`);
+    }
+
     existsByCpf(cpf: string) {
         return this.http.get<boolean>(`http://localhost:8080/persons/exists-by-cpf?cpf=${cpf}`);
     }

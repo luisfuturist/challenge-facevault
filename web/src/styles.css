@@ -2,4 +2,15 @@ html,
 body {
     height: 100%;
     width: 100%;
+    overflow-x: hidden;
+}
+
+/* Fix nz-table overflow bug */
+.ant-table-content {
+    overflow: auto !important;
+}
+
+/* Fix nz-popconfirm gap bug */
+.ant-popover-message {
+    gap: 0.25rem;
 }

@@ -1,21 +1,24 @@
 <h2 nz-typography>Pessoas</h2>
 
 <div nz-flex nzJustify="space-between">
-    <a nz-button nzType="primary" routerLink="/add-person">
-        <span nz-icon nzType="plus"></span>
-        Adicionar pessoa
-    </a>
+    <nz-space nz-flex nzAlign="center">
+        <a nz-button *nzSpaceItem nzType="primary" routerLink="/add-person">
+            <span nz-icon nzType="plus"></span>
+            Adicionar pessoa
+        </a>
+    </nz-space>
+
     <div nz-form nzLayout="horizontal" style="max-width: 24rem;">
         <nz-form-item>
             <nz-form-label [nzSpan]="null" hidden>Filtro</nz-form-label>
-    
+
             <nz-form-control [nzSpan]="null">
                 <nz-input-group [nzSuffix]="suffixIconFilter">
                     <input nz-input type="text" ngControl formControlName="nameFilter" placeholder="Nome ou CPF"
                         (keyup)="applyFilter($event)" name="nameFilter" />
                 </nz-input-group>
             </nz-form-control>
-    
+
             <ng-template #suffixIconFilter>
                 <span nz-icon nzType="filter" nzTheme="fill"></span>
             </ng-template>
@@ -28,7 +31,7 @@
         <tr>
             <th>Foto | Nome</th>
             <th>CPF</th>
-            <!-- <th>Ações</th> -->
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -38,13 +41,24 @@
                 <nz-avatar nzSize="small" nzIcon="user" [nzSrc]="data.photoUrl"></nz-avatar>
                 {{data.name}}
             </td>
+
             <td>{{formatCpf(data.maskedCpf)}}</td>
 
-            <!-- <td>
-                <a>Action 一 {{data.name}}</a>
-                <nz-divider nzType="vertical"></nz-divider>
-                <a>Delete</a>
-            </td> -->
+            <td>
+                <!-- <button (click)="deletePerson(data.id)">
+                    <span nz-icon nzType="delete"></span>
+                    Apagar
+                </button> -->
+
+                <button nzType="text" nz-button nzDanger nz-popconfirm nzPopconfirmTrigger="hover" nzOkText="Apagar" nzPopconfirmTitle="Você tem certeza?"
+                    (nzOnConfirm)="deletePerson(data.id)">
+                    <span nz-icon nzType="delete"></span>
+                    Apagar
+                </button>
+                <ng-template #iconTpl>
+                    <span nz-icon nzType="question-circle-o" style="color: red;"></span>
+                </ng-template>
+            </td>
         </tr>
         }
     </tbody>

@@ -8,6 +8,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { catchError, of } from 'rxjs';
 import { Person } from '../../beans/person/person';
 import { PersonService } from '../../beans/person/person.service';
@@ -17,7 +19,7 @@ import { debounced } from '../../utils/reactivity.utils';
 @Component({
     selector: 'app-person-list',
     standalone: true,
-    imports: [NzTableModule, NzInputModule, NzFormModule, NzIconModule, NzAvatarModule, NzButtonModule, NzFlexModule, RouterLink],
+    imports: [NzTableModule, NzInputModule, NzFormModule, NzIconModule, NzAvatarModule, NzButtonModule, NzFlexModule, RouterLink, NzSpaceModule, NzPopconfirmModule],
     templateUrl: './person-list.component.html',
     styleUrl: './person-list.component.css'
 })
@@ -97,6 +99,24 @@ export class PersonListComponent {
             }))
             .subscribe((o) => {
                 this.persons.set(o || [])
+            })
+    }
+
+    deletePerson(id: number) {
+        this.personService.deletePerson(id).pipe(catchError(() => {
+            this.message.error("Ocorreu algum erro ao tentar apagar a pessoa!")
+
+            return of(null);
+        }))
+            .pipe(catchError(() => {
+                this.message.error("Ocorreu algum erro ao tentar apagar a pessoa!")
+
+                return of(null);
+            }))
+            .subscribe(() => {
+                this.persons.update((persons) => persons.filter(p => p.id !== id))
+
+                this.message.success("Pessoa apagada com sucesso!")
             })
     }
 

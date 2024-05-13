@@ -2,6 +2,10 @@
     height: 100%;
 }
 
+nz-layout {
+    min-height: 100vh;
+}
+
 .logo a {
     height: 64px;
     line-height: 64px;
@@ -33,7 +37,38 @@ nz-breadcrumb {
 }
 
 nz-content {
-    padding: 0 50px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+    nz-content {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+@media (min-width: 768px) {
+    nz-content {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    nz-content {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+}
+
+@media (min-width: 1536px) {
+    nz-content {
+        padding-left: 5rem;
+        padding-right: 5rem;
+    }
 }
 
 nz-footer {
@@ -44,5 +79,4 @@ nz-footer {
     background: #fff;
     padding: 24px;
     min-height: 280px;
-    height: 100%;
 }
