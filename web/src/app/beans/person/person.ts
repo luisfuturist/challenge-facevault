@@ -10,3 +10,10 @@ export interface PersonCreate {
     cpf: string;
     photoUrl: string;
 }
+
+export interface PersonUpdate {
+    id: number;
+    name: string;
+    cpf: string;
+    photoUrl: string;
+}

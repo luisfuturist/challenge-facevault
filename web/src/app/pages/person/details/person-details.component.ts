@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -10,10 +10,10 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { PersonService } from '../../beans/person/person.service';
-import { Person } from '../../beans/person/person';
+import { PersonService } from '../../../beans/person/person.service';
+import { Person } from '../../../beans/person/person';
 import { catchError, of } from 'rxjs';
-import { formatCpf } from '../../utils/brazil.utils';
+import { formatCpf } from '../../../utils/brazil.utils';
 
 @Component({
     selector: 'app-person-details',
@@ -36,14 +36,15 @@ import { formatCpf } from '../../utils/brazil.utils';
 })
 export class PersonDetailsComponent implements OnInit {
 
+    route = inject(ActivatedRoute)
+    router = inject(Router)
+    message = inject(NzMessageService)
+    personService = inject(PersonService)
+
     data = signal<Person | undefined>(undefined);
     loading = signal(true);
     error = signal(false);
-
-    private route = inject(ActivatedRoute);
-    private router = inject(Router);
-
-    constructor(private personService: PersonService, private message: NzMessageService) { }
+    personId = computed(() => this.data()?.id)
 
     deletePerson() {
         const person = this.data();
@@ -68,13 +69,9 @@ export class PersonDetailsComponent implements OnInit {
             })
     }
 
-    async loadPerson() {
-        await new Promise<void>((res) => {
-            setTimeout(() => {
-                res()
-            }, 1000)
-        })
+    formatCpf = formatCpf
 
+    private async loadPerson() {
         this.route.paramMap.subscribe((params) => {
             const param = params.get('id')!;
 
@@ -115,6 +112,4 @@ export class PersonDetailsComponent implements OnInit {
     ngOnInit() {
         this.loadPerson()
     }
-
-    formatCpf = formatCpf
 }

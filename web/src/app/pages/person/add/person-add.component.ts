@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SignalInputDirective, V, createFormField, createFormGroup } from 'ng-signal-forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -7,18 +7,19 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
 import { catchError, of } from 'rxjs';
-import { PersonCreate } from '../../beans/person/person';
-import { PersonService } from '../../beans/person/person.service';
-import { CPF_PATTERN } from '../../utils/brazil.utils';
-import { convertToDto, createFormValidation } from '../../utils/form.utils';
-import { URL_PATTERN } from '../../utils/web.utils';
+import { PersonCreate } from '../../../beans/person/person';
+import { PersonService } from '../../../beans/person/person.service';
+import { CPF_PATTERN } from '../../../utils/brazil.utils';
+import { convertToDto, createFormValidation } from '../../../utils/form.utils';
+import { URL_PATTERN } from '../../../utils/web.utils';
 import { Router, RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
-    selector: 'app-add-person',
+    selector: 'app-person-add',
     standalone: true,
     imports: [
         FormsModule,
@@ -31,12 +32,17 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
         RouterLink,
         NzFlexModule,
         NzSpaceModule,
-        NzIconModule
+        NzIconModule,
+        NzTypographyModule
     ],
-    templateUrl: './add-person.component.html',
-    styleUrl: './add-person.component.css'
+    templateUrl: './person-add.component.html',
+    styleUrl: './person-add.component.css'
 })
-export class AddPersonComponent {
+export class PersonAddComponent {
+
+    router = inject(Router)
+    message = inject(NzMessageService)
+    personService = inject(PersonService)
 
     formModel = createFormGroup({
         name: createFormField('', {
@@ -73,8 +79,6 @@ export class AddPersonComponent {
     });
 
     formValidation = createFormValidation(this.formModel)
-
-    constructor(private personService: PersonService, private message: NzMessageService, private router: Router) { }
 
     submitForm() {
         this.formModel.markAllAsTouched();

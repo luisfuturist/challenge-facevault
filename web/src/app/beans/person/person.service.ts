@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Person, PersonCreate } from './person';
-import { isCpf } from '../../utils/brazil.utils';
+import { Person, PersonCreate, PersonUpdate } from './person';
 
 @Injectable({
     providedIn: 'root'
@@ -28,6 +27,10 @@ export class PersonService {
 
     savePerson(personDto: PersonCreate) {
         return this.http.post<Person>("http://localhost:8080/persons", personDto);
+    }
+
+    updatePerson(personDto: PersonUpdate) {
+        return this.http.put<Person>(`http://localhost:8080/persons/${personDto.id}`, personDto);
     }
 
     deletePerson(personId: number) {

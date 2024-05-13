@@ -26,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.luisfuturist.facevault.dtos.PersonDto;
 import com.luisfuturist.facevault.dtos.PersonResDto;
+import com.luisfuturist.facevault.dtos.PersonUpdateDto;
 import com.luisfuturist.facevault.entities.Person;
 import com.luisfuturist.facevault.services.PersonService;
 import com.luisfuturist.facevault.utils.CryptoUtils;
@@ -46,7 +47,7 @@ public class PersonController {
         var persons = personService.getAllPersons();
 
         return persons.stream()
-                .map(this::convertToPersonResDto).collect(Collectors.toList());
+                .map(this::convertEntityToPersonResDto).collect(Collectors.toList());
     }
 
     @GetMapping("/search-by-cpf/{cpf}")
@@ -58,7 +59,7 @@ public class PersonController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        return convertToPersonResDto(person);
+        return convertEntityToPersonResDto(person);
     }
 
     @GetMapping("/search-by-name/{name}")
@@ -67,7 +68,7 @@ public class PersonController {
         var persons = personService.searchPersonByName(name);
 
         return persons.stream()
-                .map(this::convertToPersonResDto).collect(Collectors.toList());
+                .map(this::convertEntityToPersonResDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -79,7 +80,7 @@ public class PersonController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        return convertToPersonResDto(person);
+        return convertEntityToPersonResDto(person);
     }
 
     @PostMapping
@@ -91,28 +92,31 @@ public class PersonController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF already used");
         }
 
-        var person = convertToEntity(personDto);
+        var person = convertDtoToEntity(personDto);
 
         var createdPerson = personService.savePerson(person);
 
-        return ResponseEntity.ok(convertToPersonResDto(createdPerson));
+        return ResponseEntity.ok(convertEntityToPersonResDto(createdPerson));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PersonResDto updatePerson(@PathVariable Long id, @Valid @RequestBody PersonDto personDto)
+    public PersonResDto updatePerson(@PathVariable Long id, @Valid @RequestBody PersonUpdateDto personDto)
             throws NoSuchAlgorithmException {
         if (!Objects.equals(id, personDto.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "IDs don't match");
         }
 
-        var person = convertToEntity(personDto);
+        var existingPerson = personService.getPersonById(id);
 
-        var hashedCpf = CryptoUtils.hashCpf(personDto.getCpf());
-
-        if (!person.getHashedCpf().equals(hashedCpf)) {
-            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
+        if(existingPerson == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Person not found");
         }
+
+        var person = convertUpdateDtoToEntity(personDto);
+        person.setCreatedAt(existingPerson.getCreatedAt());
+        person.setHashedCpf(existingPerson.getHashedCpf());
+        person.setMaskedCpf(existingPerson.getMaskedCpf());
 
         var updatedPerson = personService.updatePerson(id, person);
 
@@ -120,7 +124,7 @@ public class PersonController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        return convertToPersonResDto(updatedPerson);
+        return convertEntityToPersonResDto(updatedPerson);
     }
 
     @DeleteMapping("/{id}")
@@ -129,7 +133,7 @@ public class PersonController {
         personService.deletePerson(id);
     }
 
-    private Person convertToEntity(PersonDto personDto) throws NoSuchAlgorithmException {
+    private Person convertDtoToEntity(PersonDto personDto) throws NoSuchAlgorithmException {
         var person = new Person();
         person.setId(personDto.getId());
         person.setName(personDto.getName());
@@ -147,7 +151,19 @@ public class PersonController {
         return person;
     }
 
-    private PersonResDto convertToPersonResDto(Person person) {
+    private Person convertUpdateDtoToEntity(PersonUpdateDto personDto) {
+        var person = new Person();
+        person.setId(personDto.getId());
+        person.setName(personDto.getName());
+
+        person.setPhotoUrl(personDto.getPhotoUrl());
+
+        person.setUpdatedAt(LocalDateTime.now());
+
+        return person;
+    }
+
+    private PersonResDto convertEntityToPersonResDto(Person person) {
         var updatedPersonDto = new PersonResDto();
         updatedPersonDto.setId(person.getId());
         updatedPersonDto.setName(person.getName());

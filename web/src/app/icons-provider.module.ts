@@ -1,6 +1,7 @@
 import {
     ArrowLeftOutline,
     DeleteOutline,
+    EditOutline,
     FilterFill,
     HomeOutline,
     IdcardFill,
@@ -13,7 +14,7 @@ import {
 import { NgModule } from '@angular/core';
 import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
 
-const icons = [IdcardFill, FilterFill, PlusOutline, ArrowLeftOutline, HomeOutline, UserOutline, QuestionOutline, InfoCircleOutline, DeleteOutline];
+const icons = [IdcardFill, FilterFill, PlusOutline, ArrowLeftOutline, HomeOutline, UserOutline, QuestionOutline, InfoCircleOutline, DeleteOutline, EditOutline];
 
 @NgModule({
     imports: [NzIconModule],

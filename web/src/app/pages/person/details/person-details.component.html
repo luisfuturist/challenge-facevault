@@ -2,10 +2,10 @@
 
 <div nz-flex nzJustify="end">
     <nz-space>
-        <!-- <button nz-button *nzSpaceItem nzType="text">
+        <a [routerLink]="['/person/edit/', personId()]" nz-button *nzSpaceItem nzType="text" [disabled]="loading() || error()">
             <span nz-icon nzType="edit"></span>
             Editar
-        </button> -->
+        </a>
 
         <button *nzSpaceItem (click)="$event.stopPropagation()" nzType="text" nz-button nzDanger nz-popconfirm
             nzPopconfirmPlacement="left" [nzPopconfirmTrigger]="loading() || error() ? null : 'hover'" nzOkText="Apagar"

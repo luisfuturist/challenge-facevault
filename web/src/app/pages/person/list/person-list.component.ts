@@ -1,4 +1,4 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -7,34 +7,68 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { catchError, of } from 'rxjs';
-import { Person } from '../../beans/person/person';
-import { PersonService } from '../../beans/person/person.service';
-import { formatCpf, isCpf } from '../../utils/brazil.utils';
-import { debounced } from '../../utils/reactivity.utils';
+import { Person } from '../../../beans/person/person';
+import { PersonService } from '../../../beans/person/person.service';
+import { formatCpf, isCpf } from '../../../utils/brazil.utils';
+import { debounced } from '../../../utils/reactivity.utils';
 
 @Component({
     selector: 'app-person-list',
     standalone: true,
-    imports: [NzTableModule, NzInputModule, NzFormModule, NzIconModule, NzAvatarModule, NzButtonModule, NzFlexModule, RouterLink, NzSpaceModule, NzPopconfirmModule],
+    imports: [NzTableModule, NzInputModule, NzFormModule, NzIconModule, NzAvatarModule, NzButtonModule, NzFlexModule, RouterLink, NzPopconfirmModule,
+        NzTypographyModule],
     templateUrl: './person-list.component.html',
     styleUrl: './person-list.component.css'
 })
 export class PersonListComponent {
+
+    router = inject(Router);
+    message = inject(NzMessageService)
+    personService = inject(PersonService)
 
     persons = signal<Person[]>([])
 
     filterValue = signal("")
     debouncedFilterValue = debounced(this.filterValue, 500)
 
-    constructor(private personService: PersonService, private message: NzMessageService, private router: Router) {
+    constructor() {
         effect(() => {
             this.search(this.debouncedFilterValue())
         })
     }
+
+    deletePerson(id: number) {
+        this.personService.deletePerson(id).pipe(catchError(() => {
+            this.message.error("Ocorreu algum erro ao tentar apagar a pessoa!")
+
+            return of(null);
+        }))
+            .pipe(catchError(() => {
+                this.message.error("Ocorreu algum erro ao tentar apagar a pessoa!")
+
+                return of(null);
+            }))
+            .subscribe(() => {
+                this.persons.update((persons) => persons.filter(p => p.id !== id))
+
+                this.message.success("Pessoa apagada com sucesso!")
+            })
+    }
+
+    goToDetails(id: number) {
+        this.router.navigate(["/person/details/", id])
+    }
+
+    applyFilter(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.filterValue.set(filterValue)
+    }
+
+    formatCpf = formatCpf
 
     private search(query: string) {
         if (!query) {
@@ -101,33 +135,4 @@ export class PersonListComponent {
                 this.persons.set(o || [])
             })
     }
-
-    deletePerson(id: number) {
-        this.personService.deletePerson(id).pipe(catchError(() => {
-            this.message.error("Ocorreu algum erro ao tentar apagar a pessoa!")
-
-            return of(null);
-        }))
-            .pipe(catchError(() => {
-                this.message.error("Ocorreu algum erro ao tentar apagar a pessoa!")
-
-                return of(null);
-            }))
-            .subscribe(() => {
-                this.persons.update((persons) => persons.filter(p => p.id !== id))
-
-                this.message.success("Pessoa apagada com sucesso!")
-            })
-    }
-
-    goToDetails(id: number) {
-        this.router.navigate(["/person", id])
-    }
-
-    applyFilter(event: Event) {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.filterValue.set(filterValue)
-    }
-
-    formatCpf = formatCpf
 }

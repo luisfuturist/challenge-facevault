@@ -1,0 +1,47 @@
+<h2 nz-typography>Edit Pessoa</h2>
+
+<form nz-form nzLayout="vertical" (ngSubmit)="submitForm()">
+    <nz-form-item>
+        <nz-form-label>Nome</nz-form-label>
+
+        <nz-form-control [nzErrorTip]="formValidation.name.errorTip()"
+            [nzValidateStatus]="formValidation.name.validateStatus()">
+            <input ngModel [formField]='formModel.controls.name' id='name' nz-input type="text" placeholder="Nome"
+                name="name" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label>CPF</nz-form-label>
+
+        <nz-form-control [nzErrorTip]="formValidation.cpf.errorTip()"
+            [nzValidateStatus]="formValidation.cpf.validateStatus()">
+            <input ngModel [formField]='formModel.controls.cpf' id='cpf' nz-input type="text"
+                placeholder="000.000.000-00" name="cpf" disabled />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label>URL da Foto</nz-form-label>
+
+        <nz-form-control [nzErrorTip]="formValidation.photoUrl.errorTip()"
+            [nzValidateStatus]="formValidation.photoUrl.validateStatus()">
+            <input ngModel [formField]='formModel.controls.photoUrl' id='photoUrl' nz-input type="url" placeholder="URL"
+                name="photoUrl" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-control nzFlex>
+            <nz-space>
+                <button *nzSpaceItem nz-button nzType="primary" [disabled]="loading() || error()">Enviar</button>
+                <button *nzSpaceItem nz-button (click)="cancel($event)" type="button">Cancelar</button>
+            </nz-space>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+<a nz-button nzType="link" routerLink="/" style="margin: 0px; padding: 0px;">
+    <span nz-icon nzType="arrow-left"></span>
+    Voltar
+</a>

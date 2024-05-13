@@ -1,12 +1,12 @@
 <h2 nz-typography>Pessoas</h2>
 
-<div nz-flex nzJustify="space-between">
-    <nz-space nz-flex nzAlign="center">
-        <a nz-button *nzSpaceItem nzType="primary" routerLink="/add-person">
+<div nz-flex nzJustify="space-between" nzAlign="start">
+    <div nz-flex nzAlign="center">
+        <a nz-button nzType="primary" routerLink="/person/add/">
             <span nz-icon nzType="plus"></span>
             Adicionar pessoa
         </a>
-    </nz-space>
+    </div>
 
     <div nz-form nzLayout="horizontal" style="max-width: 24rem;">
         <nz-form-item>
@@ -56,7 +56,12 @@
                     <span nz-icon nzType="question-circle-o" style="color: red;"></span>
                 </ng-template>
 
-                <a nz-button nzType="text" (click)="$event.stopPropagation()" [routerLink]="['/person', data.id]">
+                <a nz-button nzType="text" (click)="$event.stopPropagation()" [routerLink]="['/person/edit/', data.id]">
+                    <span nz-icon nzType="edit"></span>
+                    Editar
+                </a>
+
+                <a nz-button nzType="text" (click)="$event.stopPropagation()" [routerLink]="['/person/details/', data.id]">
                     <span nz-icon nzType="info-circle"></span>
                     Detalhes
                 </a>
