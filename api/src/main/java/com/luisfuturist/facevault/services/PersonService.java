@@ -27,10 +27,14 @@ public class PersonService {
         return optionalPerson.orElse(null);
     }
 
-    public Person getPersonByCpf(String cpf) throws NoSuchAlgorithmException {
+    public Person searchPersonByCpf(String cpf) throws NoSuchAlgorithmException {
         var hashedCpf = CryptoUtils.hashCpf(cpf);
 
         return personRepo.findByHashedCpf(hashedCpf).orElse(null);
+    }
+
+    public List<Person> searchPersonByName(String name) {
+        return personRepo.findByNameContainingIgnoreCase(name);
     }
 
     public Person savePerson(Person person) {

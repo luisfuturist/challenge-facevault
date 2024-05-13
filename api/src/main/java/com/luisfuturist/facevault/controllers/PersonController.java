@@ -49,16 +49,25 @@ public class PersonController {
                 .map(this::convertToPersonResDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/search/{cpf}")
+    @GetMapping("/search-by-cpf/{cpf}")
     @ResponseBody
-    public PersonResDto getPersonByCpf(@PathVariable String cpf) throws NoSuchAlgorithmException {
-        var person = personService.getPersonByCpf(cpf);
+    public PersonResDto searchPersonByCpf(@PathVariable String cpf) throws NoSuchAlgorithmException {
+        var person = personService.searchPersonByCpf(cpf);
 
         if (person == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
         return convertToPersonResDto(person);
+    }
+
+    @GetMapping("/search-by-name/{name}")
+    @ResponseBody
+    public List<PersonResDto> searchPersonsByName(@PathVariable String name) {
+        var persons = personService.searchPersonByName(name);
+
+        return persons.stream()
+                .map(this::convertToPersonResDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")

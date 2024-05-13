@@ -11,7 +11,7 @@
     
             <nz-form-control [nzSpan]="null">
                 <nz-input-group [nzSuffix]="suffixIconFilter">
-                    <input nz-input type="text" ngControl formControlName="nameFilter" placeholder="Nome"
+                    <input nz-input type="text" ngControl formControlName="nameFilter" placeholder="Nome ou CPF"
                         (keyup)="applyFilter($event)" name="nameFilter" />
                 </nz-input-group>
             </nz-form-control>
@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<nz-table #basicTable [nzData]="dataSet()">
+<nz-table #basicTable [nzData]="persons()">
     <thead>
         <tr>
             <th>Foto | Nome</th>

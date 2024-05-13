@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { BreadcrumbItemsComponent } from './components/breadcrumb-items/breadcrumb-items.component';
 import { IconsProviderModule } from './icons-provider.module';
-import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 @Component({
     selector: 'app-root',
