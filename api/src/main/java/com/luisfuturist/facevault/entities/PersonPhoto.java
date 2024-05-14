@@ -1,7 +1,5 @@
 package com.luisfuturist.facevault.entities;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,10 +7,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,27 +19,22 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Person {
+public class PersonPhoto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is mandatory")
-    private String name;
+    @OneToOne(mappedBy = "photo", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    private Person person;
 
-    @NotBlank(message = "Hashed CPF is mandatory")
-    @Column(unique = true)
-    private String hashedCpf;
-    @NotBlank(message = "Masked CPF is mandatory")
-    private String maskedCpf;
+    @NotNull(message = "Type is mandatory")
+    @NotBlank(message = "Type is mandatory")
+    @Pattern(regexp = "^image/(jpeg|png)$", message = "Invalid image content type")
+    private String type;
 
-    @NotNull(message = "Photo is mandatory")
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "photo_id")
-    private PersonPhoto photo;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
+    @NotNull(message = "Data is mandatory")
+    @Column(columnDefinition = "bytea")
+    private byte[] data;
+    
 }

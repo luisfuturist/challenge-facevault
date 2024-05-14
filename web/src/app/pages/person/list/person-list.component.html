@@ -39,8 +39,8 @@
         <tr (click)="goToDetails(data.id)" style="cursor: pointer;">
             <td>
                 <div style="display: flex; gap: 0.25rem; align-items: center;">
-                    <nz-avatar nzSize="small" nzIcon="user" [nzSrc]="data.photoUrl"></nz-avatar>
-                    {{data.name}}
+                    <nz-avatar nzSize="small" nzIcon="user" [nzSrc]="getPhotoUrl(data)"></nz-avatar>
+                    {{data?.name}}
                 </div>
             </td>
 

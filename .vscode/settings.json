@@ -28,5 +28,10 @@
             "username": "root",
             "password": "my_password"
         }
-    ]
+    ],
+    "rest-client.environmentVariables": {
+        "development": {
+            "baseUrl": "http://localhost:8080"
+        },
+    }
 }

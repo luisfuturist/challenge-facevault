@@ -1,0 +1,41 @@
+# Find all persons
+
+GET {{baseUrl}}/persons
+
+### Get person data by id
+
+GET {{baseUrl}}/persons/1
+
+### Find person by CPF
+
+GET {{baseUrl}}/persons/search-by-cpf/00000000000
+
+### Find person by name
+
+GET {{baseUrl}}/persons/search-by-name/Motoko
+
+### Create a new person
+
+POST {{baseUrl}}/persons
+Content-Type: application/json
+
+{
+    "name": "Motoko",
+    "cpf": "00000000000",
+    "photoId": 1
+}
+
+### Update person data
+
+PUT {{baseUrl}}/persons/1
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "Motoko Kusanagi",
+    "photoId": 2
+}
+
+### Delete a person
+
+DELETE {{baseUrl}}/persons/1

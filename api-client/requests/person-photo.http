@@ -1,0 +1,33 @@
+### Get person photo by id
+
+GET {{baseUrl}}/person-photos/1
+
+### Create person photo
+
+POST {{baseUrl}}/person-photos
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="file"; filename="kyoko.png"
+Content-Type: image/png
+
+< ../resources/kyoko.png
+
+--MyBoundary--
+
+### Update person photo by id
+
+PUT {{baseUrl}}/person-photos/1
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="file"; filename="ava.png"
+Content-Type: image/png
+
+< ../resources/ava.png
+
+--MyBoundary--
+
+### Delete person photo by id
+
+DELETE {{baseUrl}}/person-photos/1

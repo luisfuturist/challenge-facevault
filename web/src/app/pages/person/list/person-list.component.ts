@@ -14,6 +14,7 @@ import { catchError, of } from 'rxjs';
 import { Person } from '../../../beans/person/person';
 import { PersonService } from '../../../beans/person/person.service';
 import { formatCpf, isCpf } from '../../../utils/brazil.utils';
+import { getPhotoUrl } from '../../../utils/image.utils';
 import { debounced } from '../../../utils/reactivity.utils';
 
 @Component({
@@ -69,6 +70,7 @@ export class PersonListComponent {
     }
 
     formatCpf = formatCpf
+    getPhotoUrl = getPhotoUrl
 
     private search(query: string) {
         if (!query) {

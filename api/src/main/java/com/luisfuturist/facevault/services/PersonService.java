@@ -3,7 +3,6 @@ package com.luisfuturist.facevault.services;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -53,7 +52,7 @@ public class PersonService {
         existingPerson.setHashedCpf(person.getHashedCpf());
         existingPerson.setMaskedCpf(person.getMaskedCpf());
 
-        existingPerson.setPhotoUrl(person.getPhotoUrl());
+        existingPerson.setPhoto(person.getPhoto());
 
         existingPerson.setCreatedAt(existingPerson.getCreatedAt());
         existingPerson.setUpdatedAt(LocalDateTime.now());

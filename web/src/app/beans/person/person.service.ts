@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environment';
 import { Person, PersonCreate, PersonUpdate } from './person';
 
 @Injectable({
@@ -7,37 +8,39 @@ import { Person, PersonCreate, PersonUpdate } from './person';
 })
 export class PersonService {
 
+    private baseUrl = environment.baseUrl;
+
     constructor(private http: HttpClient) { }
 
     getPersons() {
-        return this.http.get<Person[]>("http://localhost:8080/persons");
+        return this.http.get<Person[]>(`${this.baseUrl}/persons`);
     }
 
     getPersonById(id: number) {
-        return this.http.get<Person>(`http://localhost:8080/persons/${id}`);
+        return this.http.get<Person>(`${this.baseUrl}/persons/${id}`);
     }
 
     searchPersonByCpf(cpf: string) {
-        return this.http.get<Person>(`http://localhost:8080/persons/search-by-cpf/${cpf}`)
+        return this.http.get<Person>(`${this.baseUrl}/persons/search-by-cpf/${cpf}`)
     }
 
     searchPersonByName(name: string) {
-        return this.http.get<Person[]>(`http://localhost:8080/persons/search-by-name/${name}`)
+        return this.http.get<Person[]>(`${this.baseUrl}/persons/search-by-name/${name}`)
     }
 
     savePerson(personDto: PersonCreate) {
-        return this.http.post<Person>("http://localhost:8080/persons", personDto);
+        return this.http.post<Person>(`${this.baseUrl}/persons`, personDto);
     }
 
     updatePerson(personDto: PersonUpdate) {
-        return this.http.put<Person>(`http://localhost:8080/persons/${personDto.id}`, personDto);
+        return this.http.put<Person>(`${this.baseUrl}/persons/${personDto.id}`, personDto);
     }
 
     deletePerson(personId: number) {
-        return this.http.delete<Person>(`http://localhost:8080/persons/${personId}`);
+        return this.http.delete<Person>(`${this.baseUrl}/persons/${personId}`);
     }
 
     existsByCpf(cpf: string) {
-        return this.http.get<boolean>(`http://localhost:8080/persons/exists-by-cpf?cpf=${cpf}`);
+        return this.http.get<boolean>(`${this.baseUrl}/persons/exists-by-cpf?cpf=${cpf}`);
     }
 }

@@ -5,11 +5,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { BreadcrumbItem } from './breadcrumb-item';
 
 @Component({
-  selector: 'app-breadcrumb-items',
-  standalone: true,
-  imports: [RouterLink, NzBreadCrumbModule, NzIconModule],
-  templateUrl: './breadcrumb-items.component.html',
-  styleUrl: './breadcrumb-items.component.css'
+    selector: 'app-breadcrumb-items',
+    standalone: true,
+    imports: [RouterLink, NzBreadCrumbModule, NzIconModule],
+    templateUrl: './breadcrumb-items.component.html',
+    styleUrl: './breadcrumb-items.component.css'
 })
 export class BreadcrumbItemsComponent implements OnInit {
     data = signal<BreadcrumbItem[]>([])
@@ -21,7 +21,7 @@ export class BreadcrumbItemsComponent implements OnInit {
             if (e instanceof ActivationStart) {
                 let items = e.snapshot.data['breadcrumb'] as BreadcrumbItem[];
 
-                if(!items) {
+                if (!items) {
                     return;
                 }
 

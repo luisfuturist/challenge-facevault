@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.luisfuturist.facevault.dtos.PersonDto;
-import com.luisfuturist.facevault.dtos.PersonResDto;
-import com.luisfuturist.facevault.dtos.PersonUpdateDto;
+import com.luisfuturist.facevault.dtos.person.PersonDto;
+import com.luisfuturist.facevault.dtos.person.PersonResDto;
+import com.luisfuturist.facevault.dtos.person.PersonUpdateDto;
 import com.luisfuturist.facevault.entities.Person;
+import com.luisfuturist.facevault.entities.PersonPhoto;
+import com.luisfuturist.facevault.services.PersonPhotoService;
 import com.luisfuturist.facevault.services.PersonService;
 import com.luisfuturist.facevault.utils.CryptoUtils;
 
@@ -40,6 +42,8 @@ import jakarta.validation.Valid;
 public class PersonController {
     @Autowired
     private PersonService personService;
+    @Autowired
+    private PersonPhotoService photoService;
 
     @GetMapping
     @ResponseBody
@@ -92,15 +96,39 @@ public class PersonController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF already used");
         }
 
-        var person = convertDtoToEntity(personDto);
+        var photo = photoService.getPersonPhotoById(personDto.getPhotoId());
+
+        if(photo == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Photo not found");
+        }
+
+        var person = convertDtoToEntity(personDto, photo);
 
         var createdPerson = personService.savePerson(person);
 
         return ResponseEntity.ok(convertEntityToPersonResDto(createdPerson));
     }
 
+    private Person convertDtoToEntity(PersonDto personDto, PersonPhoto photo) throws NoSuchAlgorithmException {
+        var person = new Person();
+        person.setName(personDto.getName());
+
+        var hashedCpf = CryptoUtils.hashCpf(personDto.getCpf());
+        person.setHashedCpf(hashedCpf);
+        var maskedCpf = CryptoUtils.maskCpf(personDto.getCpf());
+        person.setMaskedCpf(maskedCpf);
+
+        person.setPhoto(photo);
+
+        person.setCreatedAt(LocalDateTime.now());
+        person.setUpdatedAt(null);
+
+        return person;
+    }
+
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     public PersonResDto updatePerson(@PathVariable Long id, @Valid @RequestBody PersonUpdateDto personDto)
             throws NoSuchAlgorithmException {
         if (!Objects.equals(id, personDto.getId())) {
@@ -113,7 +141,13 @@ public class PersonController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Person not found");
         }
 
-        var person = convertUpdateDtoToEntity(personDto);
+        var photo = photoService.getPersonPhotoById(personDto.getPhotoId());
+
+        if(photo == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Photo not found");
+        }
+
+        var person = convertUpdateDtoToEntity(personDto, photo);
         person.setCreatedAt(existingPerson.getCreatedAt());
         person.setHashedCpf(existingPerson.getHashedCpf());
         person.setMaskedCpf(existingPerson.getMaskedCpf());
@@ -133,30 +167,12 @@ public class PersonController {
         personService.deletePerson(id);
     }
 
-    private Person convertDtoToEntity(PersonDto personDto) throws NoSuchAlgorithmException {
+    private Person convertUpdateDtoToEntity(PersonUpdateDto personDto, PersonPhoto photo) {
         var person = new Person();
         person.setId(personDto.getId());
         person.setName(personDto.getName());
 
-        var hashedCpf = CryptoUtils.hashCpf(personDto.getCpf());
-        person.setHashedCpf(hashedCpf);
-        var maskedCpf = CryptoUtils.maskCpf(personDto.getCpf());
-        person.setMaskedCpf(maskedCpf);
-
-        person.setPhotoUrl(personDto.getPhotoUrl());
-
-        person.setCreatedAt(LocalDateTime.now());
-        person.setUpdatedAt(null);
-
-        return person;
-    }
-
-    private Person convertUpdateDtoToEntity(PersonUpdateDto personDto) {
-        var person = new Person();
-        person.setId(personDto.getId());
-        person.setName(personDto.getName());
-
-        person.setPhotoUrl(personDto.getPhotoUrl());
+        person.setPhoto(photo);
 
         person.setUpdatedAt(LocalDateTime.now());
 
@@ -168,7 +184,7 @@ public class PersonController {
         updatedPersonDto.setId(person.getId());
         updatedPersonDto.setName(person.getName());
         updatedPersonDto.setMaskedCpf(person.getMaskedCpf());
-        updatedPersonDto.setPhotoUrl(person.getPhotoUrl());
+        updatedPersonDto.setPhotoId(person.getPhoto().getId());
 
         return updatedPersonDto;
     }

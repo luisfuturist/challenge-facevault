@@ -52,16 +52,16 @@
 } @else {
 <div class="card">
     <header>
-        <nz-avatar class="avatar" [nzSrc]="data()!.photoUrl" nzAlt="Face photo"></nz-avatar>
+        <nz-avatar class="avatar" [nzSrc]="getPhotoUrl(data()!)" nzAlt="Face photo"></nz-avatar>
     </header>
 
     <main>
         <h3>
-            {{data()!.name}}
+            {{data()?.name}}
         </h3>
 
         <p>
-            {{formatCpf(data()!.maskedCpf)}}
+            {{formatCpf(data()?.maskedCpf!)}}
         </p>
     </main>
 </div>

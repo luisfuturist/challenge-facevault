@@ -14,6 +14,7 @@ import { PersonService } from '../../../beans/person/person.service';
 import { Person } from '../../../beans/person/person';
 import { catchError, of } from 'rxjs';
 import { formatCpf } from '../../../utils/brazil.utils';
+import { getPhotoUrl } from '../../../utils/image.utils';
 
 @Component({
     selector: 'app-person-details',
@@ -70,6 +71,7 @@ export class PersonDetailsComponent implements OnInit {
     }
 
     formatCpf = formatCpf
+    getPhotoUrl = getPhotoUrl
 
     private async loadPerson() {
         this.route.paramMap.subscribe((params) => {

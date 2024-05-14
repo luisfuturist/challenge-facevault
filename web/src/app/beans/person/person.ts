@@ -2,18 +2,18 @@ export interface Person {
     id: number;
     name: string;
     maskedCpf: string;
-    photoUrl: string;
+    photoId: number;
 }
 
 export interface PersonCreate {
     name: string;
     cpf: string;
-    photoUrl: string;
+    photoId: number;
 }
 
 export interface PersonUpdate {
     id: number;
     name: string;
     cpf: string;
-    photoUrl: string;
+    photoId: number;
 }

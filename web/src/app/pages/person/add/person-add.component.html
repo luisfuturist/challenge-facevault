@@ -22,13 +22,20 @@
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-label>URL da Foto</nz-form-label>
+        <nz-form-label>Biometria Facial</nz-form-label>
 
-        <nz-form-control [nzErrorTip]="formValidation.photoUrl.errorTip()"
-            [nzValidateStatus]="formValidation.photoUrl.validateStatus()">
-            <input ngModel [formField]='formModel.controls.photoUrl' id='photoUrl' nz-input type="url" placeholder="URL"
-                name="photoUrl" />
-        </nz-form-control>
+        <nz-upload class="avatar-uploader" nzName="file"
+            nzListType="picture-card" [nzShowUploadList]="false" (nzChange)="onUpload($event)" [nzAction]="getPhotoUploadAction()" [nzBeforeUpload]="onBeforeUpload" >
+            @if (photoUrl()) {
+            <img [src]="photoUrl()" style="width: 100%" />
+            }
+            @else {
+            <ng-container>
+                <span style="margin-right: 0.25rem;" class="upload-icon" nz-icon [nzType]="photoUploadLoading() ? 'loading' : 'plus'"></span>
+                <div class="ant-upload-text">Upload</div>
+            </ng-container>
+            }
+        </nz-upload>
     </nz-form-item>
 
     <nz-form-item>
