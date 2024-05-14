@@ -26,7 +26,11 @@ This project is a technical challenge that involves developing a web system for 
 
 ## Installing
 
-Check out [Installation Guide](./docs/index.md).
+Check out [Installation Guide](./docs/README.md).
+
+## Contributing
+
+Check out [Contributing Guide](./CONTRIBUTING.md).
 
 ## Possible Improvements
 

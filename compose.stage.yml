@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  fv-db:
+    image: postgres:16.0
+    container_name: facevault-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: facevault
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: my_password
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    network_mode: "host"
+  fv-api:
+    image: fv-api
+    build:
+      context: .
+      dockerfile: ./ops/Dockerfile.api
+    container_name: fv-api
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "fv-db"
+    network_mode: "host"
+  fv-web:
+    image: fv-web
+    container_name: fv-web
+    restart: always
+    ports:
+      - "80:80"
+    build:
+      context: .
+      dockerfile: ./ops/Dockerfile.web

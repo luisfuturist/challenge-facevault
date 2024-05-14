@@ -1,0 +1,12 @@
+# Stage 1: Build API with Gradle
+FROM gradle:latest as build
+WORKDIR /usr/local/app
+COPY ./api ./
+RUN gradle bootJar --no-daemon
+
+# Stage 2: Create API image
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /usr/local/app
+COPY --from=build /usr/local/app/build/libs/*.jar app.jar
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]

@@ -9,6 +9,7 @@
         ".gitignore": ".git*",
         ".env": ".env*",
         "settings.gradle": "gradle.properties, gradlew, gradlew.bat",
+        "compose.stage.yml": "compose.*.yml",
         "README.md": "*.md",
     },
     "editor.tabSize": 4,
