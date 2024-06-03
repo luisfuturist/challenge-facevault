@@ -51,5 +51,5 @@ Please refer to the [Guide: Testing the API](../CONTRIBUTING.md#testing-api).
 
 ## Guide: Development
 
-Refer to the [Contributing Guide]() for instructions on contributing to this project or more insights on how it was developed.
+Refer to the [Contributing Guide](../CONTRIBUTING.md) for instructions on contributing to this project or more insights on how it was developed.
 

@@ -43,7 +43,7 @@ For Visual Studio Code, consider installing the following extensions:
 
 ## Testing API
 
-For testing the API, I utilized the [Vscode REST Client extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client). You can find all the API requests in the [client.rest](../api/client.rest) file.
+For testing the API, I utilized the [Vscode REST Client extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client). You can find all the API requests in `./api-client/requests` folder.
 
 Additionally, for your convenience, I've created a public Postman workspace where you can test the API if you prefer using Postman. You can access the Postman workspace [here](https://www.postman.com/luisfuturist/workspace/facevault/overview).
 
